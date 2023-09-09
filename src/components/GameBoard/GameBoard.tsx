@@ -8,12 +8,12 @@ const GameBoard = () => {
   const col = 10;
   const mineCount = 10;
 
-  const minePlacesArr = createMinePlace(row, col, mineCount);
-  const boardData = createGameBoard(row, col);
-  const setMineBoardData = settingMines(col, minePlacesArr, boardData);
+  const minePlacesArr = createMinePlace({ row, col, mineCount });
+  const gameBoardData = createGameBoard({ row, col });
+  const setMineBoardData = settingMines({ col, minePlacesArr, gameBoardData });
 
   console.log('minePlacesArr : ', minePlacesArr);
-  console.log('boardData : ', boardData);
+  console.log('boardData : ', gameBoardData);
 
   return (
     <table>
