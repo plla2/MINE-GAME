@@ -9,24 +9,28 @@ const GameBoard = () => {
   const status = useAppSelector((state) => state.game.status);
   const dispatch = useAppDispatch();
 
-  const onLeftMouseClick = () => {
+  const onLeftMouseClick = (firstSelectPlace: number) => {
     if (status === GAME_STATUS.READY) {
-      dispatch(gameActions.start({ row: ROW, col: COL, mineCount: MINECOUNT }));
+      dispatch(gameActions.start({ row: ROW, col: COL, mineCount: MINECOUNT, firstSelectPlace }));
     }
   };
 
   return (
-    <table>
-      <tbody>
-        {gameBoardData.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {row.map((col, ColIndex) => (
-              <Cell key={rowIndex * row.length + ColIndex} col={col} onLeftMouseClick={onLeftMouseClick} />
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      {gameBoardData.map((row, rowIndex) => (
+        <div key={rowIndex}>
+          {row.map((col, colIndex) => (
+            <Cell
+              key={rowIndex * row.length + colIndex}
+              col={col}
+              onLeftMouseClick={() => {
+                onLeftMouseClick(rowIndex * row.length + colIndex);
+              }}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
   );
 };
 

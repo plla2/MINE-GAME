@@ -21,8 +21,8 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
   initialState,
   reducers: {
     start: (state, action) => {
-      const { row, col, mineCount } = action.payload;
-      const minePlacesArr = createMinePlace({ row, col, mineCount });
+      const { row, col, mineCount, firstSelectPlace } = action.payload;
+      const minePlacesArr = createMinePlace({ row, col, mineCount, firstSelectPlace });
       state.gameBoardData = settingMines({ col, minePlacesArr, gameBoardData: state.gameBoardData });
       state.status = GAME_STATUS.PLAYING;
     },

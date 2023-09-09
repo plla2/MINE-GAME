@@ -1,7 +1,7 @@
 import * as S from './CellStyle';
 
-const Cell = ({ col }: { col: number }) => {
-  return <S.CellTd>{col}</S.CellTd>;
+const Cell = ({ col, onLeftMouseClick }: { col: number; onLeftMouseClick: () => void }) => {
+  return <S.CellButton onClick={onLeftMouseClick}>{col}</S.CellButton>;
 };
 
 export default Cell;
