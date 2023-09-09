@@ -12,15 +12,17 @@ const GameBoard = () => {
   console.log('minePlacesArr : ', minePlacesArr);
   console.log('boardData : ', boardData);
   return (
-    <>
-      {boardData.map((row, index) => (
-        <tr key={index}>
-          {row.map((col, index) => (
-            <Cell key={index} col={col} />
-          ))}
-        </tr>
-      ))}
-    </>
+    <table>
+      <tbody>
+        {boardData.map((row, index) => (
+          <tr key={index}>
+            {row.map((col, index) => (
+              <Cell key={index} col={col} />
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
