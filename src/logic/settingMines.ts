@@ -11,14 +11,17 @@ const settingMines = ({
   minePlacesArr: number[];
   gameBoardData: number[][];
 }): number[][] => {
-  // createGameBoard 함수를 통해 만들어진 2차원 배열 gameBoardData에 createMinePlace함수에서 만들어진
-  // 전체cell의 개수 내에서의 랜덤한 숫자 mineCount개를 각각 col로 나눈 값과 나머지를 index로 각각 넣어준다.
+  // newGameBoard라는 매개변수로 가져온 gameBoardData를 깊은 복사하여,
+  // 새로운 2차원 배열을 만들어 수정함으로써 데이터 무결성을 유지할 수 있다.
+  const newGameBoard = gameBoardData.map((row) => [...row]);
 
+  // createGameBoard 함수를 통해 만들어진 2차원 배열 gameBoardData를 깊은 복사를 하여, createMinePlace함수에서 만들어진
+  // 전체cell의 개수 내에서의 랜덤한 숫자 mineCount개를 각각 col로 나눈 값과 나머지로 index에 각각 넣어준다.
   minePlacesArr.forEach((place) => {
     const vertical = Math.floor(place / col);
-    const horizontal = Math.ceil(place % col);
-    gameBoardData[vertical][horizontal] = CELL_TYPE.MINE;
+    const horizontal = place % col;
+    newGameBoard[vertical][horizontal] = CELL_TYPE.MINE;
   });
-  return gameBoardData;
+  return newGameBoard;
 };
 export default settingMines;
