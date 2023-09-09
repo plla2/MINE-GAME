@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import createGameBoard from '../../logic/createGameBoard';
-import { COL, GAME_STATUS, ROW } from '../../constant/Const';
-import createMinePlace from '../../logic/createMinePlace';
-import settingMines from '../../logic/settingMines';
+import { CELL_TYPE, COL, GAME_STATUS, ROW } from '../../constant/Const';
 
 interface initialStateType {
   gameBoardData: number[][];
@@ -21,10 +19,21 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
   initialState,
   reducers: {
     start: (state, action) => {
-      const { row, col, mineCount, firstSelectPlace } = action.payload;
-      const minePlacesArr = createMinePlace({ row, col, mineCount, firstSelectPlace });
-      state.gameBoardData = settingMines({ col, minePlacesArr, gameBoardData: state.gameBoardData });
+      const { gameBoardData } = action.payload;
+      state.gameBoardData = gameBoardData;
       state.status = GAME_STATUS.PLAYING;
+    },
+    open: (state, action) => {
+      const { row, col } = action.payload;
+      const selectCell = state.gameBoardData[row][col];
+
+      if (selectCell === CELL_TYPE.NORMAL || CELL_TYPE.QUESTION) {
+        state.gameBoardData[row][col] = CELL_TYPE.OPENED;
+      }
+      if (selectCell === CELL_TYPE.MINE || CELL_TYPE.QUESTION_MINE) {
+        state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
+        state.status = GAME_STATUS.LOSE;
+      }
     },
   },
 });
