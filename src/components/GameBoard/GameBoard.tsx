@@ -1,5 +1,6 @@
 import createGameBoard from '../../logic/createGameBoard';
 import createMinePlace from '../../logic/createMinePlace';
+import settingMines from '../../logic/settingMines';
 import Cell from '../Cell/Cell';
 
 const GameBoard = () => {
@@ -8,13 +9,16 @@ const GameBoard = () => {
   const mineCount = 10;
 
   const minePlacesArr = createMinePlace(row, col, mineCount);
-  const boardData = createGameBoard(row, col, minePlacesArr);
+  const boardData = createGameBoard(row, col);
+  const setMineBoardData = settingMines(col, minePlacesArr, boardData);
+
   console.log('minePlacesArr : ', minePlacesArr);
   console.log('boardData : ', boardData);
+
   return (
     <table>
       <tbody>
-        {boardData.map((row, index) => (
+        {setMineBoardData.map((row, index) => (
           <tr key={index}>
             {row.map((col, index) => (
               <Cell key={index} col={col} />
