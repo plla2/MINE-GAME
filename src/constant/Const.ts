@@ -7,3 +7,14 @@ export enum CELL_TYPE {
   FLAG_MINE = -5,
   MINE = -6,
 }
+
+export enum GAME_STATUS {
+  READY = 'READY',
+  PLAYING = 'PLAYING',
+  WIN = 'WIN',
+  LOSE = 'LOSE',
+}
+
+export const ROW = 8;
+export const COL = 8;
+export const MINECOUNT = 10;
