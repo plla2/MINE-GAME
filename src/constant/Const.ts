@@ -6,6 +6,7 @@ export enum CELL_TYPE {
   QUESTION_MINE = -4,
   FLAG_MINE = -5,
   MINE = -6,
+  MINECLICK = -7,
 }
 
 export enum GAME_STATUS {
@@ -17,4 +18,4 @@ export enum GAME_STATUS {
 
 export const ROW = 8;
 export const COL = 8;
-export const MINECOUNT = 10;
+export const TOTALMINECOUNT = 10;
