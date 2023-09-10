@@ -17,7 +17,6 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
   const getCellText = (cellType: number) => {
     switch (cellType) {
       case CELL_TYPE.NORMAL:
-        return '';
       case CELL_TYPE.MINE:
         return '';
       case CELL_TYPE.MINECLICK:
@@ -56,7 +55,6 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
       return;
     }
     alreadyOpened.push(`${row}/${col}`);
-    console.log('alreadyOpened', alreadyOpened);
 
     const aroundMineCount = countAroundMine({ row, col, gameBoardData });
 
@@ -75,7 +73,6 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
           around.push([row + 1, col]);
           around.push([row + 1, col + 1]);
         }
-        console.log('around', around);
         around.forEach((aroundCell) => {
           if (gameBoardData[aroundCell[0]][aroundCell[1]] !== CELL_TYPE.OPENED) {
             checkAround({ row: aroundCell[0], col: aroundCell[1], gameBoardData });
@@ -120,7 +117,7 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
     e.preventDefault();
     dispatch(gameActions.clickRight({ rowIndex, colIndex }));
   };
-
+  console.log(status);
   return (
     <S.CellButton
       onClick={() => {
@@ -129,9 +126,9 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
       onContextMenu={(e) => {
         clickRightMouse(e);
       }}
-      isOpen={cellOnce >= CELL_TYPE.OPENED}
-      isBomb={cellOnce === CELL_TYPE.MINECLICK}
-      disabled={status === GAME_STATUS.LOSE || GAME_STATUS.WIN}
+      $isOpen={cellOnce >= CELL_TYPE.OPENED}
+      $isBomb={cellOnce === CELL_TYPE.MINECLICK}
+      disabled={status === GAME_STATUS.LOSE || status === GAME_STATUS.WIN}
     >
       {getCellText(cellOnce)}
     </S.CellButton>
