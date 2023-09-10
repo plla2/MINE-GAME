@@ -1,4 +1,4 @@
-import { CELL_TYPE, COL, GAME_STATUS, TOTALMINECOUNT, ROW } from '../../constant/Const';
+import { CELL_TYPE, GAME_STATUS } from '../../constant/Const';
 import createMinePlace from '../../logic/createMinePlace';
 import { useAppDispatch } from '../../redux/rtk-hooks/useAppDispatch';
 import { useAppSelector } from '../../redux/rtk-hooks/useAppSelector';
@@ -7,10 +7,11 @@ import settingMines from '../../logic/settingMines';
 import { gameActions } from '../../redux/slice/gameSlice';
 import countAroundMine from '../../logic/countAroundMine';
 
-const Cell = ({ col, colIndex, rowIndex }: { col: number; rowIndex: number; colIndex: number }) => {
+const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: number; colIndex: number }) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.game.status);
   const gameBoardData = useAppSelector((state) => state.game.gameBoardData);
+  const { rowCount, colCount, mineCount } = useAppSelector((state) => state.game.size);
 
   // cell내부에 들어갈 텍스트를 반환해주는 함수
   const getCellText = (cellType: number) => {
@@ -18,15 +19,15 @@ const Cell = ({ col, colIndex, rowIndex }: { col: number; rowIndex: number; colI
       case CELL_TYPE.NORMAL:
         return '';
       case CELL_TYPE.MINE:
-        return '@';
+        return '';
       case CELL_TYPE.MINECLICK:
-        return '붐';
+        return '💣';
       case CELL_TYPE.FLAG:
       case CELL_TYPE.FLAG_MINE:
-        return '깃';
+        return '🚩';
       case CELL_TYPE.QUESTION_MINE:
       case CELL_TYPE.QUESTION:
-        return '?';
+        return '❔';
       default:
         return cellType || '';
     }
@@ -89,13 +90,13 @@ const Cell = ({ col, colIndex, rowIndex }: { col: number; rowIndex: number; colI
     // 이번 클릭이 처음 클릭일 경우
     if (status === GAME_STATUS.READY) {
       const minePlacesArr = createMinePlace({
-        row: ROW,
-        col: COL,
-        mineCount: TOTALMINECOUNT,
+        row: rowCount,
+        col: colCount,
+        mineCount: mineCount,
         firstSelectPlace,
       });
       const startingBoard = settingMines({
-        col: COL,
+        col: colCount,
         minePlacesArr,
         gameBoardData,
       });
@@ -104,10 +105,10 @@ const Cell = ({ col, colIndex, rowIndex }: { col: number; rowIndex: number; colI
     } else {
       // 이번 클릭이 첫클릭이 아닐 경우
 
-      if (col === CELL_TYPE.NORMAL) {
+      if (cellOnce === CELL_TYPE.NORMAL) {
         checkAround({ row: rowIndex, col: colIndex, gameBoardData });
       }
-      if (col === CELL_TYPE.MINE) {
+      if (cellOnce === CELL_TYPE.MINE) {
         dispatch(gameActions.open({ row: rowIndex, col: colIndex }));
       }
     }
@@ -123,14 +124,16 @@ const Cell = ({ col, colIndex, rowIndex }: { col: number; rowIndex: number; colI
   return (
     <S.CellButton
       onClick={() => {
-        clickLeftMouse(COL * rowIndex + colIndex);
+        clickLeftMouse(colCount * rowIndex + colIndex);
       }}
       onContextMenu={(e) => {
         clickRightMouse(e);
       }}
-      isOpen={col >= 0}
+      isOpen={cellOnce >= CELL_TYPE.OPENED}
+      isBomb={cellOnce === CELL_TYPE.MINECLICK}
+      disabled={status === GAME_STATUS.LOSE || GAME_STATUS.WIN}
     >
-      {getCellText(col)}
+      {getCellText(cellOnce)}
     </S.CellButton>
   );
 };

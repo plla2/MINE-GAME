@@ -10,7 +10,7 @@ const GameBoard = () => {
       {gameBoardData.map((row, rowIndex) => (
         <S.RowWrapper key={rowIndex}>
           {row.map((col, colIndex) => (
-            <Cell key={rowIndex * row.length + colIndex} col={col} rowIndex={rowIndex} colIndex={colIndex} />
+            <Cell key={rowIndex * row.length + colIndex} cellOnce={col} rowIndex={rowIndex} colIndex={colIndex} />
           ))}
         </S.RowWrapper>
       ))}

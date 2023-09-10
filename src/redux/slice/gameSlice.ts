@@ -1,19 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import createGameBoard from '../../logic/createGameBoard';
-import { CELL_TYPE, COL, GAME_STATUS, ROW } from '../../constant/Const';
+import { CELL_TYPE, GAME_STATUS } from '../../constant/Const';
 
 interface initialStateType {
   gameBoardData: number[][];
+  size: { rowCount: number; colCount: number; mineCount: number };
   status: string;
   timer: number;
+  openedCount: number;
   flagCount: number;
   isPlaying: boolean;
 }
 
 const initialState: initialStateType = {
-  gameBoardData: createGameBoard({ row: ROW, col: COL }),
+  gameBoardData: [] as number[][],
+  size: { rowCount: 0, colCount: 0, mineCount: 0 },
   status: GAME_STATUS.READY,
   timer: 0,
+  openedCount: 0,
   flagCount: 0,
   isPlaying: false,
 };
@@ -22,6 +26,16 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
   name: 'game',
   initialState,
   reducers: {
+    resizeBoard: (state, action) => {
+      const { rowCount, colCount, mineCount } = action.payload;
+      state.size.rowCount = rowCount;
+      state.size.colCount = colCount;
+      state.size.mineCount = mineCount;
+      state.gameBoardData = createGameBoard({ row: rowCount, col: colCount });
+      state.status = GAME_STATUS.READY;
+      state.openedCount = 0;
+    },
+
     start: (state, action) => {
       const { gameBoardData } = action.payload;
       state.gameBoardData = gameBoardData;
@@ -36,6 +50,7 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
 
       if (selectCell === CELL_TYPE.NORMAL || CELL_TYPE.QUESTION) {
         state.gameBoardData[row][col] = mineCount;
+        state.openedCount++;
       }
       if (selectCell === CELL_TYPE.MINE || CELL_TYPE.QUESTION_MINE) {
         state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
