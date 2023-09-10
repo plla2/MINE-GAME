@@ -117,7 +117,7 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
     e.preventDefault();
     dispatch(gameActions.clickRight({ rowIndex, colIndex }));
   };
-  console.log(status);
+
   return (
     <S.CellButton
       onClick={() => {
