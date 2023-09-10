@@ -26,7 +26,7 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
         return '🚩';
       case CELL_TYPE.QUESTION_MINE:
       case CELL_TYPE.QUESTION:
-        return '❔';
+        return '?';
       default:
         return cellType || '';
     }
