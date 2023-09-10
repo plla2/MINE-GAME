@@ -34,25 +34,29 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
       state.gameBoardData = createGameBoard({ row: rowCount, col: colCount });
       state.status = GAME_STATUS.READY;
       state.openedCount = 0;
+      state.timer = 0;
+      state.isPlaying = false;
     },
 
     start: (state, action) => {
       const { gameBoardData } = action.payload;
       state.gameBoardData = gameBoardData;
       state.status = GAME_STATUS.PLAYING;
-      if (!state.isPlaying) {
-        state.isPlaying = true;
-      }
     },
     open: (state, action) => {
       const { row, col, mineCount } = action.payload;
       const selectCell = state.gameBoardData[row][col];
+      if (!state.isPlaying) {
+        state.isPlaying = true;
+      }
 
       if (selectCell === CELL_TYPE.NORMAL || selectCell === CELL_TYPE.QUESTION) {
         state.gameBoardData[row][col] = mineCount;
         state.openedCount++;
-        if (state.size.mineCount === state.size.rowCount * state.size.colCount - state.openedCount)
+        if (state.size.mineCount === state.size.rowCount * state.size.colCount - state.openedCount) {
           state.status = GAME_STATUS.WIN;
+          state.isPlaying = false;
+        }
       }
       if (selectCell === CELL_TYPE.MINE || selectCell === CELL_TYPE.QUESTION_MINE) {
         state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
