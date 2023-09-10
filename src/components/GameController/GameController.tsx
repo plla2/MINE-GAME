@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import logo from '../../assets/logo.webp';
 import { useAppDispatch } from '../../redux/rtk-hooks/useAppDispatch';
 import { gameActions } from '../../redux/slice/gameSlice';
+import { useAppSelector } from '../../redux/rtk-hooks/useAppSelector';
 
 const GameController = () => {
   const dispatch = useAppDispatch();
   const [customRow, setCustomRow] = useState(0);
   const [customCol, setCustomCol] = useState(0);
   const [customMine, setCustomMine] = useState(0);
+
+  const { rowCount, colCount, mineCount } = useAppSelector((state) => state.game.size);
 
   useEffect(() => {
     dispatch(gameActions.resizeBoard({ rowCount: 8, colCount: 8, mineCount: 10 }));
@@ -54,6 +57,9 @@ const GameController = () => {
           }}
         >
           Custom
+        </button>
+        <button onClick={() => dispatch(gameActions.resizeBoard({ rowCount, colCount, mineCount }))} type="button">
+          Reset
         </button>
       </div>
     </div>

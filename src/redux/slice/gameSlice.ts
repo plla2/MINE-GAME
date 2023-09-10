@@ -51,6 +51,8 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
       if (selectCell === CELL_TYPE.NORMAL || CELL_TYPE.QUESTION) {
         state.gameBoardData[row][col] = mineCount;
         state.openedCount++;
+        if (state.size.mineCount === state.size.rowCount * state.size.colCount - state.openedCount)
+          state.status = GAME_STATUS.WIN;
       }
       if (selectCell === CELL_TYPE.MINE || CELL_TYPE.QUESTION_MINE) {
         state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
