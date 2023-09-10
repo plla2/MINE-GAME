@@ -6,12 +6,16 @@ interface initialStateType {
   gameBoardData: number[][];
   status: string;
   timer: number;
+  flagCount: number;
+  isPlaying: boolean;
 }
 
 const initialState: initialStateType = {
   gameBoardData: createGameBoard({ row: ROW, col: COL }),
   status: GAME_STATUS.READY,
   timer: 0,
+  flagCount: 0,
+  isPlaying: false,
 };
 
 const { actions: gameActions, reducer: gameReducer } = createSlice({
@@ -22,18 +26,25 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
       const { gameBoardData } = action.payload;
       state.gameBoardData = gameBoardData;
       state.status = GAME_STATUS.PLAYING;
+      if (!state.isPlaying) {
+        state.isPlaying = true;
+      }
     },
     open: (state, action) => {
-      const { row, col } = action.payload;
+      const { row, col, mineCount } = action.payload;
       const selectCell = state.gameBoardData[row][col];
 
       if (selectCell === CELL_TYPE.NORMAL || CELL_TYPE.QUESTION) {
-        state.gameBoardData[row][col] = CELL_TYPE.OPENED;
+        state.gameBoardData[row][col] = mineCount;
       }
       if (selectCell === CELL_TYPE.MINE || CELL_TYPE.QUESTION_MINE) {
         state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
         state.status = GAME_STATUS.LOSE;
+        state.isPlaying = false;
       }
+    },
+    updateTimer: (state): void => {
+      state.timer += 1;
     },
   },
 });
