@@ -10,4 +10,7 @@ export const CellButton = styled.button<{ $isOpen: boolean; $isBomb: boolean }>`
   font-weight: 700;
   color: ${({ theme }) => theme.color.font_color};
   font-size: 18px;
+  &:disabled {
+    opacity: 0.4;
+  }
 `;
