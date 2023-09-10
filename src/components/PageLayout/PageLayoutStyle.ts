@@ -9,5 +9,5 @@ export const Container = styled.div`
   align-items: center;
   margin: 0 auto;
   padding: 0 10px;
-  background-color: #f9f5e7;
+  background-color: ${({ theme }) => theme.color.background};
 `;
