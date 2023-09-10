@@ -3,18 +3,28 @@ import logo from '../../assets/logo.webp';
 import { useAppDispatch } from '../../redux/rtk-hooks/useAppDispatch';
 import { gameActions } from '../../redux/slice/gameSlice';
 import { useAppSelector } from '../../redux/rtk-hooks/useAppSelector';
+import useInterval from '../hooks/useInterval';
 
 const GameController = () => {
   const dispatch = useAppDispatch();
   const [customRow, setCustomRow] = useState(0);
   const [customCol, setCustomCol] = useState(0);
   const [customMine, setCustomMine] = useState(0);
+  const timer = useAppSelector((state) => state.game.timer);
+  const isPlaying = useAppSelector((state) => state.game.isPlaying);
 
   const { rowCount, colCount, mineCount } = useAppSelector((state) => state.game.size);
 
   useEffect(() => {
     dispatch(gameActions.resizeBoard({ rowCount: 8, colCount: 8, mineCount: 10 }));
   }, []);
+
+  useInterval(
+    () => {
+      dispatch(gameActions.updateTimer());
+    },
+    isPlaying ? 1000 : null,
+  );
 
   return (
     <div>
@@ -61,6 +71,9 @@ const GameController = () => {
         <button onClick={() => dispatch(gameActions.resizeBoard({ rowCount, colCount, mineCount }))} type="button">
           Reset
         </button>
+        <div>
+          경과 시간 : <span>{timer}</span>
+        </div>
       </div>
     </div>
   );
