@@ -46,6 +46,7 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
     open: (state, action) => {
       const { row, col, mineCount } = action.payload;
       const selectCell = state.gameBoardData[row][col];
+
       if (!state.isPlaying) {
         state.isPlaying = true;
       }
@@ -59,7 +60,7 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
         }
       }
       if (selectCell === CELL_TYPE.MINE || selectCell === CELL_TYPE.QUESTION_MINE) {
-        state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
+        state.gameBoardData[row][col] = CELL_TYPE.MINECLICK;
         state.status = GAME_STATUS.LOSE;
         state.isPlaying = false;
       }
