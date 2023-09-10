@@ -113,11 +113,22 @@ const Cell = ({ col, colIndex, rowIndex }: { col: number; rowIndex: number; colI
     }
   };
 
+  const clickRightMouse = (e: React.MouseEvent) => {
+    // e.preventDefault()를 사용하여 마우스 오른쪽 버튼을 클릭했을 때,
+    // 브라우저에서 컨텍스트 메뉴가 열리는 것을 막는다.
+    e.preventDefault();
+    dispatch(gameActions.clickRight({ rowIndex, colIndex }));
+  };
+
   return (
     <S.CellButton
       onClick={() => {
         clickLeftMouse(COL * rowIndex + colIndex);
       }}
+      onContextMenu={(e) => {
+        clickRightMouse(e);
+      }}
+      isOpen={col >= 0}
     >
       {getCellText(col)}
     </S.CellButton>

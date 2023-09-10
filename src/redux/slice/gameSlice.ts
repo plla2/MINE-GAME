@@ -46,6 +46,38 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
     updateTimer: (state): void => {
       state.timer += 1;
     },
+    clickRight: (state, action) => {
+      const { rowIndex, colIndex } = action.payload;
+
+      switch (state.gameBoardData[rowIndex][colIndex]) {
+        case CELL_TYPE.NORMAL: {
+          state.gameBoardData[rowIndex][colIndex] = CELL_TYPE.FLAG;
+          break;
+        }
+        case CELL_TYPE.FLAG: {
+          state.gameBoardData[rowIndex][colIndex] = CELL_TYPE.QUESTION;
+          break;
+        }
+        case CELL_TYPE.QUESTION: {
+          state.gameBoardData[rowIndex][colIndex] = CELL_TYPE.NORMAL;
+          break;
+        }
+        case CELL_TYPE.MINE: {
+          state.gameBoardData[rowIndex][colIndex] = CELL_TYPE.FLAG_MINE;
+          break;
+        }
+        case CELL_TYPE.FLAG_MINE: {
+          state.gameBoardData[rowIndex][colIndex] = CELL_TYPE.QUESTION_MINE;
+          break;
+        }
+        case CELL_TYPE.QUESTION_MINE: {
+          state.gameBoardData[rowIndex][colIndex] = CELL_TYPE.MINE;
+          break;
+        }
+        default:
+          return;
+      }
+    },
   },
 });
 
