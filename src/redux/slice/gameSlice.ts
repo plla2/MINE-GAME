@@ -48,13 +48,13 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
       const { row, col, mineCount } = action.payload;
       const selectCell = state.gameBoardData[row][col];
 
-      if (selectCell === CELL_TYPE.NORMAL || CELL_TYPE.QUESTION) {
+      if (selectCell === CELL_TYPE.NORMAL || selectCell === CELL_TYPE.QUESTION) {
         state.gameBoardData[row][col] = mineCount;
         state.openedCount++;
         if (state.size.mineCount === state.size.rowCount * state.size.colCount - state.openedCount)
           state.status = GAME_STATUS.WIN;
       }
-      if (selectCell === CELL_TYPE.MINE || CELL_TYPE.QUESTION_MINE) {
+      if (selectCell === CELL_TYPE.MINE || selectCell === CELL_TYPE.QUESTION_MINE) {
         state.gameBoardData[row][col] === CELL_TYPE.MINECLICK;
         state.status = GAME_STATUS.LOSE;
         state.isPlaying = false;
