@@ -75,7 +75,7 @@ const GameController = () => {
       </S.CustomWrapper>
       <S.Timer>
         <span>경과 시간 : {timer}초</span>
-        <button onClick={() => dispatch(gameActions.resizeBoard({ rowCount, colCount, mineCount }))} type="button">
+        <button onClick={() => handleLevelChange(rowCount, colCount, mineCount)} type="button">
           Restart
         </button>
       </S.Timer>
