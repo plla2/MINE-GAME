@@ -1,34 +1,35 @@
 import { CELL_TYPE } from '../constant/Const';
 
-const countAroundMine = ({
-  row,
-  col,
-  gameBoardData,
-}: {
-  row: number;
-  col: number;
-  gameBoardData: number[][];
-}): number => {
-  let aroundCells: number[] = [];
+const countAroundMine = ({ row, col, gameBoardData }: { row: number; col: number; gameBoardData: number[][] }) => {
   let aroundMineCount = 0;
 
-  // 선택한 cell의 윗줄이 있으면 윗줄에서 선택한 cell 주위의 3개의 요소를 가진 배열과 병합한다.
-  aroundCells = gameBoardData[row - 1]
-    ? aroundCells.concat(gameBoardData[row - 1][col - 1], gameBoardData[row - 1][col], gameBoardData[row - 1][col + 1])
-    : aroundCells;
+  // 주변 셀의 좌표를 정의합니다.
+  const coordinatesToCheck = [
+    { x: -1, y: -1 },
+    { x: -1, y: 0 },
+    { x: -1, y: 1 },
+    { x: 0, y: -1 },
+    { x: 0, y: 1 },
+    { x: 1, y: -1 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+  ];
 
-  // 선택한 cell의 같은 줄의 양 옆 2개의 요소를 가진 배열과 병합한다.
-  aroundCells = aroundCells.concat(gameBoardData[row][col - 1], gameBoardData[row][col + 1]);
+  // 주변 셀을 검사합니다.
+  for (const { x, y } of coordinatesToCheck) {
+    const newRow = row + x;
+    const newCol = col + y;
 
-  // 선택한 cell의 아랫줄이 있으면 아랫줄에서 선택한 cell 주위의 3개의 요소를 가진 배열과 병합한다.
-  aroundCells = gameBoardData[row + 1]
-    ? aroundCells.concat(gameBoardData[row + 1][col - 1], gameBoardData[row + 1][col], gameBoardData[row + 1][col + 1])
-    : aroundCells;
+    // 셀이 게임 보드 내에 있는지 확인합니다.
+    if (newRow >= 0 && newRow < gameBoardData.length && newCol >= 0 && newCol < gameBoardData[0].length) {
+      const cellType = gameBoardData[newRow][newCol];
 
-  // 선택한 cell의 주위cell들 중 지뢰cell인 것을 필터링하고 필터링된 배열의 길이를 구한다.
-  aroundMineCount = aroundCells.filter((aroundCell) =>
-    [CELL_TYPE.FLAG_MINE, CELL_TYPE.MINE, CELL_TYPE.MINECLICK, CELL_TYPE.QUESTION_MINE].includes(aroundCell),
-  ).length;
+      // 주변 셀 중에서 지뢰 셀인 경우 카운트를 증가시킵니다.
+      if ([CELL_TYPE.FLAG_MINE, CELL_TYPE.MINE, CELL_TYPE.MINECLICK, CELL_TYPE.QUESTION_MINE].includes(cellType)) {
+        aroundMineCount++;
+      }
+    }
+  }
 
   return aroundMineCount;
 };
