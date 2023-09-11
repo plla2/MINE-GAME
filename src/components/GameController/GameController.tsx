@@ -27,6 +27,18 @@ const GameController = () => {
     isPlaying ? 1000 : null,
   );
 
+  const handleLevelChange = (rowCount: number, colCount: number, mineCount: number) => {
+    dispatch(gameActions.resizeBoard({ rowCount, colCount, mineCount }));
+  };
+
+  const handleCustomResize = () => {
+    if (customRow > 0 && customCol > 0 && customMine >= 0) {
+      dispatch(gameActions.resizeBoard({ rowCount: customRow, colCount: customCol, mineCount: customMine }));
+    } else {
+      alert('양수를 입력해주세요 !!');
+    }
+  };
+
   return (
     <S.Container>
       <S.Header>
@@ -35,22 +47,13 @@ const GameController = () => {
       </S.Header>
       <S.LevelWrapper>
         <span>Level :</span>
-        <button
-          type="button"
-          onClick={() => dispatch(gameActions.resizeBoard({ rowCount: 8, colCount: 8, mineCount: 10 }))}
-        >
+        <button type="button" onClick={() => handleLevelChange(8, 8, 10)}>
           Beginner
         </button>
-        <button
-          type="button"
-          onClick={() => dispatch(gameActions.resizeBoard({ rowCount: 16, colCount: 16, mineCount: 40 }))}
-        >
+        <button type="button" onClick={() => handleLevelChange(16, 16, 40)}>
           Intermediate
         </button>
-        <button
-          type="button"
-          onClick={() => dispatch(gameActions.resizeBoard({ rowCount: 16, colCount: 32, mineCount: 100 }))}
-        >
+        <button type="button" onClick={() => handleLevelChange(16, 32, 100)}>
           Expert
         </button>
       </S.LevelWrapper>
@@ -65,12 +68,7 @@ const GameController = () => {
           </div>
         </div>
         <div>
-          <button
-            type="button"
-            onClick={() => {
-              dispatch(gameActions.resizeBoard({ rowCount: customRow, colCount: customCol, mineCount: customMine }));
-            }}
-          >
+          <button type="button" onClick={handleCustomResize}>
             Custom
           </button>
         </div>
