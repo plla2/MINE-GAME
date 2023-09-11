@@ -16,13 +16,13 @@ const GameController = () => {
 
   const { rowCount, colCount, mineCount } = useAppSelector((state) => state.game.size);
 
-  // 처음 렌더링에서는 보드의 size가 8x8, 지뢰수가10개인 보드가 설정된다.
+  // 처음 렌더링에서는 size가 8x8, 지뢰수가10개인 게임보드가 설정된다.
   useEffect(() => {
     dispatch(gameActions.resizeBoard({ rowCount: 8, colCount: 8, mineCount: 10 }));
   }, []);
 
   // useInterval 커스텀훅을 통해 일정시간동안 반복적으로 콜백함수를 실행시키는데,
-  // updateTimer 리듀서를 1000ms마다 반복적으로 실행시킨다.
+  // isPlaying이 true일 때 updateTimer 리듀서를 1000ms마다 반복적으로 실행시킨다.
   useInterval(
     () => {
       dispatch(gameActions.updateTimer());
@@ -30,10 +30,14 @@ const GameController = () => {
     isPlaying ? 1000 : null,
   );
 
+  // level에 따라 게임보드의 크기, 지뢰의 수가 바뀌기 때문에 함수 하나로 만들어서,
+  // resizeBoard 리듀서를 통해 매개변수로 받은 3개의 값으로 dispatch할 수 있게 해주었다.
   const handleLevelChange = (rowCount: number, colCount: number, mineCount: number) => {
     dispatch(gameActions.resizeBoard({ rowCount, colCount, mineCount }));
   };
 
+  // handleLevelChange 함수와 마찬가지로 사용자가 입력한 값으로 setState를 통해 변경된,
+  // 게임보드 크기, 지뢰 개수 상태로 dispatch 한다.
   const handleCustomResize = () => {
     if (customRow > 0 && customCol > 0 && customMine >= 0) {
       dispatch(gameActions.resizeBoard({ rowCount: customRow, colCount: customCol, mineCount: customMine }));
