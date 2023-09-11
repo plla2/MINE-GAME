@@ -107,6 +107,7 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
       }
       if (cellOnce === CELL_TYPE.MINE) {
         dispatch(gameActions.open({ row: rowIndex, col: colIndex }));
+        alert('지뢰를 터뜨리셨습니다. 재도전해보세요!!');
       }
     }
   };
@@ -126,6 +127,7 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
       onContextMenu={(e) => {
         clickRightMouse(e);
       }}
+      // prefix'$'를 통해 isOpen, isBomb props가 실제DOM요소에 전달되는 것을 막는다.
       $isOpen={cellOnce >= CELL_TYPE.OPENED}
       $isBomb={cellOnce === CELL_TYPE.MINECLICK}
       disabled={status === GAME_STATUS.LOSE || status === GAME_STATUS.WIN}

@@ -57,6 +57,7 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
         if (state.size.mineCount === state.size.rowCount * state.size.colCount - state.openedCount) {
           state.status = GAME_STATUS.WIN;
           state.isPlaying = false;
+          alert('승리하셨습니다! 레벨을 올려 도전해보세요!!');
         }
       }
       if (selectCell === CELL_TYPE.MINE || selectCell === CELL_TYPE.QUESTION_MINE) {
