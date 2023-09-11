@@ -16,10 +16,13 @@ const GameController = () => {
 
   const { rowCount, colCount, mineCount } = useAppSelector((state) => state.game.size);
 
+  // 처음 렌더링에서는 보드의 size가 8x8, 지뢰수가10개인 보드가 설정된다.
   useEffect(() => {
     dispatch(gameActions.resizeBoard({ rowCount: 8, colCount: 8, mineCount: 10 }));
   }, []);
 
+  // useInterval 커스텀훅을 통해 일정시간동안 반복적으로 콜백함수를 실행시키는데,
+  // updateTimer 리듀서를 1000ms마다 반복적으로 실행시킨다.
   useInterval(
     () => {
       dispatch(gameActions.updateTimer());

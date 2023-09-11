@@ -37,12 +37,12 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
 
   // 주변 cell들을 체크해서 지뢰가 없으면 한번에 open해주는 함수
   const checkAround = ({ row, col, gameBoardData }: { row: number; col: number; gameBoardData: number[][] }) => {
-    // cell의 상,하,좌,우가 없는 cell은 아무것도 실행하지 않는다.
+    // row,col 좌표가 보드 범위를 벗어나는지 확인하고, 벗어난다면 함수를 종료한다.
     if (row < 0 || row >= gameBoardData.length || col < 0 || col >= gameBoardData[0].length) {
       return;
     }
 
-    // 해당 cell이 아래 5가지의 경우에 해당하지않고, 닫혀있는 상태일때만 open한다.
+    // 해당 cell이 open, flag, question 상태인지 확인하고, 맞다면 함수를 종료한다.
     if (
       [CELL_TYPE.FLAG, CELL_TYPE.FLAG_MINE, CELL_TYPE.OPENED, CELL_TYPE.QUESTION, CELL_TYPE.QUESTION_MINE].includes(
         gameBoardData[row][col],
@@ -50,7 +50,7 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
     ) {
       return;
     }
-    // 만약 이전에 open이 됐던 cell은 제외
+    // 만약 이전에 open이 됐던 cell이라면 함수를 종료한다.
     if (alreadyOpened.includes(`${row}/${col}`)) {
       return;
     }
@@ -58,27 +58,29 @@ const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: nu
 
     const aroundMineCount = countAroundMine({ row, col, gameBoardData });
 
+    // 해당 선택된 cell의 주변에 지뢰가 없으면, around를 빈배열로 초기화 시키고
+    // 윗줄, 아랫줄이 있는지 확인후에 있으면 around배열에 x,y 위치를 [x,y]형태로 push 해준다.
     if (aroundMineCount === 0) {
-      if (row > -1) {
-        const around = [];
-        if (row - 1 > -1) {
-          around.push([row - 1, col - 1]);
-          around.push([row - 1, col]);
-          around.push([row - 1, col + 1]);
-        }
-        around.push([row, col - 1]);
-        around.push([row, col + 1]);
-        if (row + 1 < gameBoardData.length) {
-          around.push([row + 1, col - 1]);
-          around.push([row + 1, col]);
-          around.push([row + 1, col + 1]);
-        }
-        around.forEach((aroundCell) => {
-          if (gameBoardData[aroundCell[0]][aroundCell[1]] !== CELL_TYPE.OPENED) {
-            checkAround({ row: aroundCell[0], col: aroundCell[1], gameBoardData });
-          }
-        });
+      const around = [];
+      if (row - 1 > -1) {
+        around.push([row - 1, col - 1]);
+        around.push([row - 1, col]);
+        around.push([row - 1, col + 1]);
       }
+      around.push([row, col - 1]);
+      around.push([row, col + 1]);
+      if (row + 1 < gameBoardData.length) {
+        around.push([row + 1, col - 1]);
+        around.push([row + 1, col]);
+        around.push([row + 1, col + 1]);
+      }
+      // 위에서 배열형태로 받은 x,y위치인 요소들을 각각 이미 열려있는 cell을 제외하고,
+      // [x,y]형태인 aroundCell을 DFS 탐색으로 계속해서 재귀적으로 checkAround함수를 호출한다.
+      around.forEach((aroundCell) => {
+        if (gameBoardData[aroundCell[0]][aroundCell[1]] !== CELL_TYPE.OPENED) {
+          checkAround({ row: aroundCell[0], col: aroundCell[1], gameBoardData });
+        }
+      });
     }
     dispatch(gameActions.open({ row, col, mineCount: aroundMineCount }));
   };
