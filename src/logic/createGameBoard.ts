@@ -10,9 +10,9 @@ const createGameBoard = ({ row, col }: { row: number; col: number }) => {
   // 빈배열로 초기화 된 rowLineData 배열에 CELL_TYPE.NORMAL인 -1을 col개 push해주고,
   // 2차원 배열인 gameBoardData에 -1이 col개로 채워진 rowLineData배열을 push해준다.
   // 위의 과정을 row번 반복한다.
-  for (let lineNumber = 0; lineNumber < row; lineNumber++) {
+  for (let rowLineNumber = 0; rowLineNumber < row; rowLineNumber++) {
     const rowLineData = [];
-    for (let lineElement = 0; lineElement < col; lineElement++) {
+    for (let colLineElement = 0; colLineElement < col; colLineElement++) {
       rowLineData.push(CELL_TYPE.NORMAL);
     }
     gameBoardData.push(rowLineData);
