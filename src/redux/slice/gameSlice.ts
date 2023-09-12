@@ -27,6 +27,7 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
   initialState,
   reducers: {
     resizeBoard: (state, action) => {
+      // 해당 리듀서는 게임 보드 크기를 조정하고, 기타 상태들을 초기화하는 액션을 처리한다.
       const { rowCount, colCount, mineCount } = action.payload;
       state.size.rowCount = rowCount;
       state.size.colCount = colCount;
@@ -39,11 +40,14 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
     },
 
     start: (state, action) => {
+      // 해당 리듀서는 게임 보드 데이터를 설정하는 액션을 처리한다.
       const { gameBoardData } = action.payload;
       state.gameBoardData = gameBoardData;
       state.status = GAME_STATUS.PLAYING;
     },
     open: (state, action) => {
+      // 해당 리듀서는 cell을 열면서 게임상태와 게임보드를 업데이트하고,
+      // 이긴경우, 진경우에 대한 액션을 처리한다.
       const { row, col, mineCount } = action.payload;
       const selectCell = state.gameBoardData[row][col];
 
@@ -70,6 +74,7 @@ const { actions: gameActions, reducer: gameReducer } = createSlice({
       state.timer += 1;
     },
     clickRight: (state, action) => {
+      // 해당 리듀서는 마우스 오른쪽 버튼을 클릭하여 cell에 깃발, 물음표, 일반 표시를 하는 액션을 처리한다.
       const { rowIndex, colIndex } = action.payload;
 
       switch (state.gameBoardData[rowIndex][colIndex]) {
