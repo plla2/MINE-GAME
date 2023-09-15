@@ -1,16 +1,8 @@
 // 해당 함수는 전체 cell 크기 내에서 지뢰가 들어갈 자리를 랜덤으로 만들어서 배열로 반환하는 함수
 
-const createMinePlace = ({
-  row,
-  col,
-  mineCount,
-  firstSelectPlace,
-}: {
-  row: number;
-  col: number;
-  mineCount: number;
-  firstSelectPlace: number;
-}): number[] => {
+import { createMinePlaceTypes } from './logicTypes';
+
+const createMinePlace = ({ row, col, mineCount, firstSelectPlace }: createMinePlaceTypes): number[] => {
   const minePlacesArr: number[] = [];
 
   // 빈배열로 초기화한 minePlacesArr 배열의 길이가 매개변수로 받은 mineCount보다 작을 때는 계속해서

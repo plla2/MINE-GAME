@@ -1,8 +1,9 @@
 import { CELL_TYPE } from '../constant/Const';
+import { createGameBoardTypes } from './logicTypes';
 
 // 해당 함수는 이중 반복문을 통해 매개변수로 받은 row, col값에 해당하는 크기의 2차원 배열을 반환하는 함수
 
-const createGameBoard = ({ row, col }: { row: number; col: number }) => {
+const createGameBoard = ({ row, col }: createGameBoardTypes) => {
   const gameBoardData: number[][] = [];
 
   // 이중 반복문을 통해 내부의 반복문을 먼저 모두 마쳐야 외부의 반복문으로 넘어가게 한다.
