@@ -6,8 +6,9 @@ import * as S from './CellStyle';
 import settingMines from '../../logic/settingMines';
 import { gameActions } from '../../redux/slice/gameSlice';
 import countAroundMine from '../../logic/countAroundMine';
+import { CellPropsType } from './CellTypes';
 
-const Cell = ({ cellOnce, colIndex, rowIndex }: { cellOnce: number; rowIndex: number; colIndex: number }) => {
+const Cell = ({ cellOnce, colIndex, rowIndex }: CellPropsType) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.game.status);
   const gameBoardData = useAppSelector((state) => state.game.gameBoardData);
