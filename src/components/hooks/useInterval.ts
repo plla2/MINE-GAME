@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
-
-type callbackFCType = () => void;
+import { callbackFCType } from './useIntervalTypes';
 
 // 이 커스텀 훅은 callback, delay라는 2개의 매개변수를 받는다.
 // callback은 delay마다 호출된다.
